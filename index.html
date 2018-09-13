@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang='pl' >
+<head>
+    <meta charset="utf-8">
+    <link rel=stylesheet href="css/bootstrap.css">
+</head>
+    
+<body  class="container" ng-app="module" ng-controller="PostsController as vm">  
+                     
+<div>
+<input class="btn btn-primary" type="button" value="MOTYW CIEMNY" ng-click="myStyle={'background-color':'black', 'color':'white'}">
+<input class="btn btn-primary" type="button" value="MOTYW JASNY" ng-click="myStyle={'background-color':'white', 'color':'black'}">
+<input  class="btn btn-primary"type="button" value="WYCZYŚĆ" ng-click="myStyle={}">
+<br/></div>
+           
+<p class="well" ng-style="myStyle">Strona: <br>
+          <span class="glyphicon glyphicon-ok"></span>pobiera pliki JSON, które w zależności od potrzeb użytkownika, są odpowiednio uruchamiane i wyświetlane w tabeli.<br> 
+          <span class="glyphicon glyphicon-ok"></span>Dodatkowo można wśród nich wyszukiwać interesujących nas rzeczy, <br>
+          <span class="glyphicon glyphicon-ok"></span>strona przelicza także ilość pobranych informacji, wyświetlając ją w błękitnym okienku.<br> 
+          <span class="glyphicon glyphicon-ok"></span>Dodana została funkjonalność w "Do zrobienia", zadania które są określane jako false(a więc nie zrobione) można zaznaczyć poprzez checkbox i stają się one true(czyli zrobione). <br>
+          <span class="glyphicon glyphicon-ok"></span>Jest też funkcja zmiany kolorów <br></p>
+          <div>
+          
+<span class="well"><strong>Wybierz API:</strong>Kliknij, żeby zaznaczyć co Cię interesuje</span><br>
+
+<div>
+              <button class="btn btn-primary" ng-click="wyb1=true;wyb2=false;wyb3=false;wyb4=false;wyb5=false;wyb6=false"><span class="glyphicon glyphicon-text-background"></span> posty</button>
+              <button class="btn btn-primary" ng-click="wyb1=false;wyb2=true;wyb3=false;wyb4=false;wyb5=false;wyb6=false"><span class="glyphicon glyphicon-comment"></span> komentarze</button>
+              <button class="btn btn-primary" ng-click="wyb2=false;wyb2=false;wyb3=true;wyb4=false;wyb5=false;wyb6=false"><span class="glyphicon glyphicon-folder-open"></span> albumy</button>
+              <button class="btn btn-primary" ng-click="wyb2=false;wyb2=false;wyb3=false;wyb4=true;wyb5=false;wyb6=false"><span class="glyphicon glyphicon-picture"></span> zdjecia</button>
+              <button class="btn btn-primary" ng-click="wyb2=false;wyb2=false;wyb3=false;wyb4=false;wyb5=true;wyb6=false"><span class="glyphicon glyphicon-check"></span> do zrobienia</button>
+              <button class="btn btn-primary" ng-click="wyb2=false;wyb2=false;wyb3=false;wyb4=false;wyb5=false;wyb6=true"><span class="glyphicon glyphicon-user"></span> użytkownicy</button></div>   
+        
+<span ng-if="wyb1">
+      <label class="alert alert-info"> Wywietlono {{vm.postsfromapiservice.items.length}} wyników. Szukasz czegoś konkretnego?  <span class="glyphicon glyphicon-search"></span></label>
+    <input class="form-control input-lg" type="search" ng-model="q" placeholder="szukaj..." />
+      <ul class="example-animate-container">
+      <table class="table table-hover table-striped table-condensed">
+          <tr>
+              <td>ID</td> 
+              <td>TYTUŁ</td>
+              <td>ZAWARTOŚĆ</td> </tr>
+          <tr ng-repeat="x in vm.postsfromapiservice.items | filter:q">
+              <td>{{x.id}}</td>
+              <td>{{x.title}}</td>
+              <td>{{x.body}}</td>
+              <td class="animate-repeat" ng-if="filteredItems.length === 0">Nie posiadam czegoś takiego ;(</td>
+          </tr></table>
+          
+      
+      </ul>
+</span>            
+              
+<span ng-if="wyb2">
+      <label class="alert alert-info">Wywietlono {{vm.commentsfromapiservice.length}} wyników. Szukasz czegoś konkretnego?<span class="glyphicon glyphicon-search"></span></label>
+      <input class="form-control input-lg" type="search" ng-model="q" placeholder="szukaj..." />
+      <ul class="example-animate-container">
+      <table class="table table-hover table-striped table-condensed">  <tr>
+              <td>ID</td> 
+              <td>IMIE</td>
+              <td>EMAIL</td> </tr>
+          <tr ng-repeat="x in vm.commentsfromapiservice.items | filter:q">
+              <td>{{x.id}}</td> 
+              <td>{{x.name}}</td>
+              <td>{{x.email}}</td> </tr>
+      </table>
+      </ul>
+      </span>              
+                           
+<span ng-if="wyb3">
+      <label class="alert alert-info">Wywietlono {{vm.albumsfromapiservice.items.length}} wyników. Szukasz czegoś konkretnego?<span class="glyphicon glyphicon-search"></span></label>
+      <input class="form-control input-lg" type="search" ng-model="q" placeholder="szukaj..." />
+      <ul class="example-animate-container">
+               <table class="table table-hover table-striped table-condensed">  <tr>
+              <td>ID</td> 
+              <td>TYTUŁ</td> </tr>
+          <tr ng-repeat="x in vm.albumsfromapiservice.items | filter:q">
+              <td>{{x.id}}</td> 
+              <td>{{x.title}}</td> </tr>
+      </table>
+      <li class="animate-repeat" ng-if="results.length === 0">
+      <strong>Nie posiadam czegoś takiego ;( </strong>
+      </li>
+      </ul>
+</span>              
+                           
+<span ng-if="wyb4">
+      <label class="alert alert-info">Wywietlono {{vm.photosfromapiservice.items.length}} wyników. Szukasz czegoś konkretnego?<span class="glyphicon glyphicon-search"></span></label>
+      <input class="form-control input-lg" type="search" ng-model="q" placeholder="szukaj..." />
+      <ul class="example-animate-container">
+            <table class="table table-hover table-striped table-condensed">  <tr>
+              <td>ID</td> 
+              <td>TYTUŁ</td>
+               <td>LINK</td></tr>
+          <tr ng-repeat="x in vm.photosfromapiservice.items | filter:q">
+              <td>{{x.id}}</td> 
+              <td>{{x.title}}</td>
+              <td>{{x.url}}</td> </tr>
+      </table>
+      </ul>
+      </span> 
+         
+<span ng-if="wyb5">
+      <label class="alert alert-info">Wywietlono {{vm.todosfromapiservice.items.length}} wyników. Szukasz czegoś konkretnego?<span class="glyphicon glyphicon-search"></span></label>
+      <input class="form-control input-lg" type="search" ng-model="q" placeholder="szukaj..." />
+      <ul class="example-animate-container">
+           <table class="table table-hover table-striped table-condensed">  <tr>
+              <td>ID</td> 
+              <td>TYTUŁ</td></tr>
+          <tr ng-repeat="x in vm.todosfromapiservice.items | filter:q">
+              <td>{{x.id}}</td> 
+              <td>{{x.title}} </td>
+              <td><input type="checkbox" ng-if="x.completed==false" ng-model="x.completed">{{x.completed}}</td></tr>
+     </table>
+    </ul>
+</span>
+   
+<span ng-if="wyb6">
+    <label class="alert alert-info">Wywietlono {{vm.usersfromapiservice.items.length}} wyników. Szukasz czegoś konkretnego?<span class="glyphicon glyphicon-search"></span></label>
+    <input class="form-control input-lg" type="search" ng-model="q" placeholder="szukaj..." />
+      <ul class="example-animate-container">
+                <table class="table table-hover table-striped table-condensed">  <tr>
+              <td>ID</td> 
+              <td>STRONA</td>
+               <td>TELEFON</td></tr>
+          <tr ng-repeat="x in vm.usersfromapiservice.items | filter:q">
+              <td>{{x.id}}</td> 
+              <td>{{x.website}}</td>
+              <td>{{x.phone}}</td> </tr>
+      </table>
+      </ul>
+</span>
+        </div>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.2/angular.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.7/angular-resource.js"></script>
+        <script src="jQuery.js" type="text/javascript"></script>
+        <script src="js/bootstrap.js" type="text/javascript"></script>
+        <script src="js.js"></script>
+        <script src="jscontroller.js"></script>
+        <script>var app = angular.module('module', ['mainController']);</script>
+    </body>
+   
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
